@@ -24,14 +24,25 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  const save = function (name, interviewer) {
+  function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer,
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview).then(() => transition(SHOW));
-  };
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true));
+  }
+
+  function destroy() {
+    transition(DELETING, true);
+    props
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch((error) => transition(ERROR_DELETE, true));
+  }
 
   return (
     <article className="appointment">
@@ -41,6 +52,8 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onEdit={() => transition(EDIT)}
+          onDelete={() => transition(CONFIRM)}
         />
       )}
       {mode === CREATE && (
@@ -50,7 +63,30 @@ export default function Appointment(props) {
           onSave={save}
         />
       )}
+      {mode === EDIT && (
+        <Form
+          student={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          interviewers={props.interviewers}
+          onCancel={back}
+          onSave={save}
+        />
+      )}
+      {mode === CONFIRM && (
+        <Confirm
+          message="Delete the appointment?"
+          onCancel={back}
+          onConfirm={destroy}
+        />
+      )}
       {mode === SAVING && <Status message="Saving" />}
+      {mode === ERROR_SAVE && (
+        <Error message="Unable to save appointment." onClose={back} />
+      )}
+      {mode === DELETING && <Status message="Deleting" />}
+      {mode === ERROR_DELETE && (
+        <Error message="Unable to delete appointment." onClose={back} />
+      )}
     </article>
   );
 }
