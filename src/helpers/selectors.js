@@ -6,6 +6,7 @@ export function getAppointmentsForDay(state, day) {
   for (let dayObject of state.days) {
     if (day === dayObject.name) {
       appointmentsArray = dayObject.appointments;
+      console.log(dayObject);
     }
   }
 
@@ -13,6 +14,30 @@ export function getAppointmentsForDay(state, day) {
     appointmentObject = state.appointments[appointmentNumber];
     if (appointmentObject) {
       result.push(appointmentObject);
+    }
+  }
+
+  console.log(result);
+
+  return result;
+}
+
+export function getInterviewersForDay(state, day) {
+  let interviewersArray = [];
+  let interviewerObject = {};
+  const result = [];
+
+  for (let dayObject of state.days) {
+    if (day === dayObject.name) {
+      console.log(dayObject);
+      interviewersArray = dayObject.interviewers;
+    }
+  }
+
+  for (let interviewerNumber of interviewersArray) {
+    interviewerObject = state.interviewers[interviewerNumber];
+    if (interviewerObject) {
+      result.push(interviewerObject);
     }
   }
 
