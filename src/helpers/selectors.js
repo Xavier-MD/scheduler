@@ -6,7 +6,6 @@ export function getAppointmentsForDay(state, day) {
   for (let dayObject of state.days) {
     if (day === dayObject.name) {
       appointmentsArray = dayObject.appointments;
-      console.log(dayObject);
     }
   }
 
@@ -16,8 +15,6 @@ export function getAppointmentsForDay(state, day) {
       result.push(appointmentObject);
     }
   }
-
-  console.log(result);
 
   return result;
 }
@@ -29,7 +26,6 @@ export function getInterviewersForDay(state, day) {
 
   for (let dayObject of state.days) {
     if (day === dayObject.name) {
-      console.log(dayObject);
       interviewersArray = dayObject.interviewers;
     }
   }
@@ -40,8 +36,6 @@ export function getInterviewersForDay(state, day) {
       result.push(interviewerObject);
     }
   }
-
-  console.log(result);
 
   return result;
 }
